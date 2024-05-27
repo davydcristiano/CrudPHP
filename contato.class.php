@@ -96,12 +96,18 @@
 
         public function editar($nome, $email, $idContato) {
             //validando o email.
+            if ($this->existeEmail($email) == false) {
                 $sql = "UPDATE contatos SET nome = :nome, email = :email WHERE idContato = :idContato";
                 $sql = $this->pdo->prepare($sql);
                 $sql->bindValue(':nome', $nome);
                 $sql->bindValue(':email', $email);
                 $sql->bindValue(':idContato', $idContato);
                 $sql->execute();
+
+                return true;
+            } else {
+                return false;
+            }
         }
 
         //criando o exluir - DELETE
