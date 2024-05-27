@@ -1,0 +1,30 @@
+<?php
+
+    include 'contato.class.php';
+
+    $contato = new Contato();
+
+    //echo "Executou o index!";
+    //adicionar contatos - exemplos.
+    $contato->adicionar('davydcristiano@gmail.com', 'Davyd');
+    $contato->adicionar('luanaedavyd@gmail.com', 'Casal top');
+
+    //Testes do retorno do crud.
+    //Como pegar um nome de um determinado contato.
+    /*$nome = $contato->getNome('luanaedavyd@gmail.com');
+    //print
+    echo "Nome: " . $nome;*/
+
+    //Comando para pegar a lista total dos nossos itens.
+    /*$lista = $contato->getAll(); //O getAll sempre vai retornar um array
+    //print_r($lista); printando a lista total dos nossos itens
+    print_r($lista);*/
+
+    //Teste Update - Atualizando
+    //Para editar qualquer contato que queira, utilizar esse comando aqui!
+    /*$contato->editar('Fulano', 'davydcristiano@gmail.com');*/
+
+    //Excluir um contato.
+    /*$contato->excluir('davydcristiano@gmail.com');*/
+
+?>

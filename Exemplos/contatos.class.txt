@@ -1,0 +1,116 @@
+<?php
+    class Contato {
+
+        private $pdo;
+        
+        public function __construct() {
+            $this->pdo = new PDO("mysql:dbname=crudphp;host=localhost","root","");
+        //echo "Fez a conexão - Ao banco de dados MySQL ->";
+        }
+
+        //Funcionalidade C -> Criador de contatos
+        public function adicionar($email, $nome = '') {
+            //inserir novos contatos
+            // 1 Passo = verificar se o email já existe no sistema
+            // 2 Passo = adicionar
+
+            //metodo auxiliar if
+            if($this->existeEmail($email) == false) {
+                //adicionar o sql
+                $sql = "INSERT INTO contatos (nome, email) VALUES (:nome, :email)";
+                $sql = $this->pdo->prepare($sql);
+                $sql->bindValue(':nome', $nome);
+                $sql->bindValue(':email', $email);
+                $sql->execute();
+
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        //Funcionalidade R -> READ
+        public function getNome($email) {
+            $sql = "SELECT nome FROM contatos WHERE email = :email";
+            $sql = $this->pdo->prepare($sql);
+            $sql->bindValue(':email', $email);
+            $sql->execute();
+
+            //verificar se acha alguma coisa
+            if($sql->rowCount() > 0){
+                //pegando a informacion
+                $info = $sql->fetch();
+                //retorna la informacion
+                return $info['nome'];
+
+            } else {
+                return '';
+            }
+        }
+
+        //2 passo da Funcionalidade R -> SEGUNDO PASSO pegar todos os dados
+        public function getAll() {
+            $sql = "SELECT * FROM contatos";
+            $sql = $this->pdo->query($sql);
+
+            //verificando todos os contatos
+            if ($sql->rowCount() > 0) {
+                  return $sql->fetchAll();
+            } else {
+            return array();
+        }
+      }  
+        //Finalizando a Funcionalidade R -> SEGUNDO PASSO
+
+        //criando o update - editar
+        public function editar($nome, $email) {
+            if ($this->existeEmail($email)) {
+                $sql = "UPDATE contatos SET nome = :nome WHERE email = :email";
+                $sql = $this->pdo->prepare($sql);
+                $sql->bindValue(':nome',$nome);
+                $sql->bindValue(':email',$email);
+                $sql->execute();
+
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        //criando o exluir - DELETE
+        /*public function excluir($email) {
+            //verificação de email
+            if ($this->existeEmail($email)) {
+                $sql = "DELETE FROM contatos WHERE email = :email";
+                $sql = $this->pdo->prepare($sql);
+                $sql->bindValue(':email',$email);
+                $sql->execute();
+
+                return true;
+            } else {
+                return false;
+            }
+        }*/
+        //atualização de fazer a exclusão pelo id
+        public function excluir($id) {
+                $sql = "DELETE FROM contatos WHERE id = :id";
+                $sql = $this->pdo->prepare($sql);
+                $sql->bindValue(':id',$id);
+                $sql->execute();
+            }
+
+        private function existeEmail($email){
+            $sql = "SELECT * FROM contatos WHERE email = :email";
+            $sql = $this->pdo->prepare($sql);
+            $sql->bindValue(':email',$email);
+            $sql->execute();
+
+            if ($sql->rowCount() > 0) {
+                    return true;
+            } else {
+                    return false;
+        }
+    }
+
+    }
+?>

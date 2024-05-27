@@ -1,0 +1,11 @@
+CREATE DATABASE crudphp;
+
+USE crudphp;
+
+CREATE TABLE contatos(
+idContato INT PRIMARY KEY AUTO_INCREMENT,
+nome VARCHAR(45) NOT NULL,
+email VARCHAR(100)
+);
+
+
